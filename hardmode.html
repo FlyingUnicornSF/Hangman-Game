@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hardmode</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Architects+Daughter" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <div class="navbar-brand">Coffe Shop Hangman</div>
+                </div>
+                <!-- closing navbar-header -->
+                <div class="float-right need-margin text-right">
+                    menu:
+                    <br> coffee, expresso, latte, coldbrew
+                </div>
+                <!-- closing nav-coll -->
+            </div>
+            <!-- closing container -->
+        </nav>
+    </header>
+    <div class="container">
+        <div class="row sage">
+            <div class="col-md-8 bg-white">
+                <div class="need-margin">
+                    <div class="page-header">
+                        <h1>Welcome to my coffee shop!</h1></div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 panel">
+                            <h3 class="panel-heading text-center">Wins</h3>
+                            <div class="wins panel-body"></div>
+                            <p class="numOfWin text-center"></p>
+                        </div>
+                        <!-- closing col-mid-3 with thumbnail image -->
+                        <div class="col-md-9 col-sm-9">
+                            <div class="littleVoice">Press any key to get started</div>
+                            <hr>
+                            <p>You picked
+                                <section class="youGuessed"></section>
+                            </p>
+                            <p>past guesses
+                                <section class="guessedList"></section>
+                            </p>
+                            <p>number of guesses remaining</p>
+                            <p class="remaining">#</p>
+                            <div class="currentWord"></div>
+                        </div>
+                        <!-- closing col-md-9 -->
+                    </div>
+                    <!-- closing row with thumbnail and paragraph -->
+                </div>
+                <!--  closing need-margin -->
+            </div>
+            <!-- closing col-mid-8 page-header about me -->
+            <div class="col-md-4">
+                <div class="panel need-margin">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">How to make....</h3>
+                    </div>
+                    <!-- closing panel heading -->
+                    <div class="panel-body row">
+                        <div id="player"></div>
+                        <!-- iframe goes here -->
+                    </div>
+                    <!-- closing panel body -->
+                </div>
+                <!-- closing panel -->
+            </div>
+            <!-- closing col md-4 contains panel -->
+        </div>
+        <!-- closing row containing about me and connect with me -->
+    </div>
+    <!-- closing main container -->
+    <script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
+    <script type="text/javascript">
+    var hangcaffeine = {
+        //list of secreat words
+        wordList: ['coffee', 'latte', 'coldbrew', 'expresso'],
+        guessedLetter: '',
+        guessCounter: 15,
+        guessedLetterList: [],
+        secretWordArrayHidden: '',
+        numOfWin: 0,
+
+        initialize: function() {
+            // initialize the game with first click 
+            //game picked word 
+            secretWord = this.wordList[Math.floor(Math.random() * this.wordList.length)];
+            console.log(secretWord + " secret word in initialize")
+            // creating new array from the word picked
+            secretWordArray = Array.from(secretWord);
+            console.log(secretWordArray + " this works")
+            // fill the new array with _ for display
+            secretWordArrayHidden = Array.from(secretWordArray).fill("_");
+
+            // join the array so it doesn't know "," that was new annoying thing I had to learn ugh
+            document.querySelector(".currentWord").innerHTML = secretWordArrayHidden.join(" ");
+            document.querySelector(".littleVoice").innerHTML = "Ready? guess your first letter!";
+            document.querySelector(".youGuessed").innerHTML = "-";
+
+            return {
+                secretWord: secretWord,
+                secretWordArray: secretWordArray,
+                secretWordArrayHidden: secretWordArrayHidden
+            }
+
+        }, //closing initialize
+
+        playGame: function() {
+
+            //display the guessed letter
+            document.querySelector(".youGuessed").innerHTML = this.guessedLetter
+            document.querySelector(".guessedList").innerHTML = this.guessedLetterList
+
+            //check if the letter is already guessed
+            this.didYouAlreadyGuess()
+
+        }, // clsoing playGame funcion
+
+        didYouAlreadyGuess: function() {
+            // check if the guessedletter is in the word
+            if (this.guessedLetterList.indexOf(this.guessedLetter) !== -1) {
+                //if already in the list
+                document.querySelector(".littleVoice").innerHTML = "You already guessed that.. (-__-;)"
+                this.guessLeftCounter()
+                //and check it it's gave over 
+                this.isItGameOver()
+            }
+            // if not, check if guessed right or not
+            else {
+
+                this.didYouGuessRight()
+            }
+        }, //closing did you already Guess	
+
+        didYouGuessRight: function() {
+
+            if (this.secretWord.includes(this.guessedLetter)) {
+
+                this.youGuessedRight()
+                console.log('yay you guessed right')
+                this.youWon()
+
+            } //closing if 			
+            else {
+                console.log("boo")
+                this.guessLeftCounter()
+                document.querySelector(".littleVoice").innerHTML = "That wasn't it. m(--)m";
+                this.isItGameOver()
+
+            } //closing else	
+
+            this.guessedLetterList.push(this.guessedLetter);
+        },
+
+        youGuessedRight: function() {
+            console.log("you're in youGuessedRight function")
+            var indices = [];
+            var le = this.guessedLetter
+            console.log(this.guessedLetter)
+            var sWAG = this.secretWordArray
+            console.log(this.secretWordArray)
+
+            idx = secretWordArray.indexOf(le);
+            console.log(idx)
+            while (idx != -1) {
+                indices.push(idx);
+                idx = sWAG.indexOf(le, idx + 1);
+                console.log("I'm in idx")
+            }
+            // 	// and place the guessed letter into that index
+            indices.forEach(function(location) {
+                console.log(le)
+                this.secretWordArrayHidden[location] = le;
+                console.log("I'm in forEach")
+                document.querySelector(".currentWord").innerHTML = secretWordArrayHidden.join(" ");
+            });
+
+            document.querySelector(".littleVoice").innerHTML = "Good Guess!!";
+        }, // closing youGuessedRight		
+
+        // subtract one from counter 
+        guessLeftCounter: function() {
+            this.guessCounter--
+                console.log("i'm in guessLeftCounter")
+            document.querySelector(".remaining").innerHTML = this.guessCounter
+
+        },
+
+
+        isItGameOver: function() {
+            if (this.guessCounter != 0) {
+                return
+            }
+            document.querySelector(".littleVoice").innerHTML = "YOU LOSE! Press any key to refresh... cheater...(-_-*)"
+            this.resetGame()
+            this.numOfWin = 0
+            document.querySelector(".numOfWin").innerHTML = this.numOfWin
+
+
+        },
+
+        youWon: function() {
+            console.log("i'm in youWon function")
+            if (this.secretWordArray.join('') != this.secretWordArrayHidden.join('')) {
+                return;
+            }
+
+            document.querySelector(".littleVoice").innerHTML = "YOU WON!! Press any key to star a new game!"
+            this.numOfWin++
+                document.querySelector(".numOfWin").innerHTML = this.numOfWin
+
+            this.playVid()
+
+            //reset everything to restart game	
+            this.resetGame()
+
+        }, //close youWon function
+
+        resetGame: function() {
+            console.log("i'm in rest game function")
+            initializeed = false
+            this.guessCounter = 15
+            this.guessedLetterList = []
+            this.guessedLetter = ''
+            document.querySelector(".guessedList").innerHTML = this.guessedLetterList
+            document.querySelector('.youGuessed').innerHTML = this.guessedLetter
+            document.querySelector('.remaining').innerHTML = this.guessCounter
+
+        },
+
+        playVid: function() {
+            console.log("i'm in playVid function")
+            var player = new YT.Player('player', {
+                height: '290',
+                width: '340',
+                videoId: 'rBDWKOONdto',
+                events: {
+                    'onReady': function(event) {
+                        event.target.playVideo();
+                    },
+
+                }
+            });
+        },
+
+
+    } //closing hangcaffeine
+
+    //--------- S T A R T -----------------------
+
+
+    // Setting initial condition first then calling game function 
+    var initializeed = false;
+
+    document.onkeyup = function(event) {
+        hangcaffeine.guessedLetter = event.key;
+        if (!initializeed) {
+
+            var computerPickedWord = hangcaffeine.initialize()
+            hangcaffeine.secretWord = computerPickedWord.secretWord
+            hangcaffeine.secretWordArray = computerPickedWord.secretWordArray
+            console.log(hangcaffeine.secretWordArray)
+            hangcaffeine.secretWordArrayHidden = computerPickedWord.secretWordArrayHidden
+            initializeed = true;
+
+        } else {
+
+            hangcaffeine.playGame()
+
+        }
+    } // closing onkeyup
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+nav {
+	background-color: #332F29;
+	color: #D3DECA;
+}
+body {
+	background-image: url("wallpaper.jpg");
+	font-family: 'Architects Daughter', cursive;
+}
+
+.sage {
+	background-color: #D3DECA;
+}
+
+h1,
+h2,
+h3,
+p {
+	color: #332F29;
+}
+.float-right {
+	float: right;
+}
+.panel-heading {
+	color: #CCC69D;
+	border-bottom: 1px gray solid;
+}
+
+.panel-title {
+	color: #CCC69D;
+}
+
+.need-margin {
+	margin: 10px;
+}
+
+.numOfWin {
+	color: #FFB00D;
+}
+
+.youGuessed, .remaining {
+	color: #769476;
+}

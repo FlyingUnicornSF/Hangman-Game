@@ -1,31 +1,33 @@
-## Synopsis
+## Hangman-Game at Coffee Shop
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+https://flyingunicornsf.github.io/Hangman-Game/
 
-## Code Example
+Organize the game code as an object, except for the key events to get the letter guessed.
+functions are in the wrapped in `var hangcaffeine = {` 
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+Game is initialized by 
+`var initializeed = false;
 
-## Motivation
+    document.onkeyup = function(event) {
+    
+        hangcaffeine.guessedLetter = event.key;
+        
+        if (!initializeed) {
+        
+            var computerPickedWord = hangcaffeine.initialize()`
+            
+            
+### functions in hangcaffeine object
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+- initialize
+- playGame
+- didYouAlreadyGuess
+- didYouAlreadyGuess (great names... Can't even think what else it could possibly do....) 
+- youGuessedRight
+- guessLeftCounter
+- isItGameOver
+- youWon
+- resetGame
+- playVid
 
-## Installation
 
-Provide code examples and explanations of how to get the project.
-
-## API Reference
-
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
-
-## Tests
-
-Describe and show how to run the tests with code examples.
-
-## Contributors
-
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
-
-## License
-
-A short snippet describing the license (MIT, Apache, etc.)
